@@ -1,0 +1,77 @@
+//*******************************************************************************
+// APPLICATION-WIDE SASS VARIABLES
+//*******************************************************************************
+
+
+
+//
+// Debugging
+//
+// Swap rows for easy enable / disable
+//
+$htmlLinting: true;
+$htmlLinting: false;
+$showPesticide: true;
+$showPesticide: false;
+$showGridDisplayer: false;
+$showGridDisplayer: true;
+$media-queries-debugging: false;
+$media-queries-debugging: true;
+
+
+
+//
+// Colors
+// Get one Value: .test { color: map-get($colors, orange); }
+// or use the function: .test { color: color(black); }
+//
+$colors: (
+	black: #000,
+	white: #fff,
+	dark: #000,
+	bright: #fff,
+
+	grey: #ccc,
+);
+
+
+//
+// Font-Sizes
+//
+
+
+
+//
+// Breakpoints
+//
+$smallestBreakpoint: xxs;
+$breakpoint-xs:  414px; // iPhone Plus
+$breakpoint-sm:  640px;
+$breakpoint-sl:  768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1520px;
+
+$breakpoint-min: 400px;
+$breakpoint-mid: 800px;
+$breakpoint-max: 1600px;
+
+
+
+
+//
+// Spacer Value
+//
+$spacer: 1vw;
+
+
+//
+// Autoprefixer
+// enable grid translations for IE
+// Used as control comment
+// https://github.com/postcss/autoprefixer#does-autoprefixer-polyfill-grid-layout-for-ie
+// https://css-tricks.com/css-grid-in-ie-duplicate-area-names-now-supported/#article-header-id-11
+//
+
+/* Globally enable grid prefixes */
+/* autoprefixer grid: on */

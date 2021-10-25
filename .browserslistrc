@@ -1,0 +1,14 @@
+# Browsers that we support
+# https://github.com/browserslist/browserslist
+# Run npx browserslist in your project directory to see project’s target browsers. This CLI tool is built-in and available in any project with Autoprefixer.
+
+>= 0.5% in DE
+last 1 major version
+not dead
+last 5 Chrome versions
+last 5 Firefox versions
+Edge >= 18
+Explorer > 11
+iOS >= 11
+last 5 Safari versions
+Android >= 4.4

@@ -1,0 +1,216 @@
+//*******************************************************************************
+// Helpers - Grid Displayer
+//*******************************************************************************
+@if $showGridDisplayer == false {
+	.griddisplayer {
+		display: none;
+	}
+}
+@if $showGridDisplayer == true {
+	.griddisplayer {
+		display: flex;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		pointer-events: none;
+		z-index: -10;
+
+		div {
+			padding: 0px;
+			opacity: .12;
+			outline: 1px solid rgb(255, 111, 111);
+			// background-color: rgba(255, 111, 111, 0.4);
+			float: left;
+			width: 5vw;
+			text-align: center;
+
+			&:nth-child(2n) {
+				background-color: rgba(255, 111, 111, .6);
+			}
+		}
+	}
+}
+
+
+
+//*******************************************************************************
+// Helpers - Media Queries Debugging
+//
+// Inspiration: http://bueltge.de/test/media-query-debugger.php
+//*******************************************************************************
+// body::before {
+//   @include breakpoint(xs) {  }
+//   @include breakpoint(sm) {  }
+//   @include breakpoint(sl) {  }
+//   @include breakpoint(md) {  }
+//   @include breakpoint(lg) {  }
+//   @include breakpoint(xl) {  }
+// }
+
+//
+// Show always Breakpoints Content in pseudo-element for javascript checkup
+//
+@if $media-queries-debugging == true {
+	body::before {
+		position: fixed;
+		z-index: 2000;
+		top: 0;
+		left: 0;
+		font-weight: 800;
+		color: #000;
+		text-align: center;
+		padding: .2em;
+		font-weight: 400;
+
+		@include breakpoint(xxs) {
+			background: rgba(165, 0, 42, 0.8);
+			content: "XXS";
+		}
+
+		@include breakpoint(xs) {
+			background: rgba(165, 42, 42, 0.8);
+			content: "XS";
+		}
+
+		@include breakpoint(sm) {
+			background: rgba(255, 0, 0, 0.8);
+			content: "SM";
+		}
+
+		@include breakpoint(sl) {
+			background: rgba(230, 120, 0, 0.8);
+			content: "SL";
+		}
+
+		@include breakpoint(mid) {
+			background: #db22dc;
+			content: "mid";
+		}
+
+		@include breakpoint(md) {
+			background: rgba(0, 153, 153, 0.8);
+			content: "MD";
+		}
+
+		@include breakpoint(lg) {
+			background: rgba(205, 0, 116, 0.8);
+			content: "LG";
+		}
+
+		@include breakpoint(xl) {
+			background: rgba(76, 176, 252, 1);
+			content: "XL";
+		}
+
+
+
+		@include breakpoint(max) {
+			background: #8efc4c;
+			content: ">1600px";
+		}
+	}
+}
+
+
+
+
+//*******************************************************************************
+// HTML Linting using CSS
+//
+// Source: https://bitsofco.de/linting-html-using-css/
+//*******************************************************************************
+@if $htmlLinting == true {
+
+	// Inline Styles
+	*[style] {
+		box-shadow: 0 0 0 5px transparentize(red, 0);
+	}
+
+	// Faulty or Missing Link Targets
+	a:not([href]),
+	a[href="#"],
+	a[href=""],
+	a[href*="javascript:void(0)"] {
+		box-shadow: 0 0 0 5px transparentize(blue, 0);
+	}
+
+	// Unaccessible Images
+	img:not([alt]),
+	img[alt=""] {
+		box-shadow: 0 0 5px 5px transparentize(deeppink, 0);
+	}
+
+	// Missing Document Language
+	html:not([lang]),
+	html[lang=""] {
+		box-shadow: 0 0 0 5px transparentize(#ff7f50, .5);
+	}
+
+	// Incorrect Character Set
+	meta[charset]:not([charset="UTF-8"]) {
+		box-shadow: 0 0 0 5px transparentize(#dc143c, .5);
+	}
+
+	meta[charset="UTF-8"]:not(:first-child) {
+		box-shadow: 0 0 0 5px transparentize(#dc143c, .5);
+	}
+
+	// Unaccessible Viewport Attributes
+	meta[name="viewport"][content*="user-scalable=no"],
+	meta[name="viewport"][content*="maximum-scale"],
+	meta[name="viewport"][content*="minimum-scale"] {
+		box-shadow: 0 0 0 5px transparentize(#f0f, .5);
+	}
+
+	// Unlabelled Form Elements
+	input:not([id]),
+	select:not([id]),
+	textarea:not([id]) {
+		box-shadow: 0 0 0 5px transparentize(#da70d6, .5);
+	}
+
+	label:not([for]) {
+		box-shadow: 0 0 0 5px transparentize(#da70d6, .5);
+	}
+
+	input:not([name]),
+	select:not([name]),
+	textarea:not([name]),
+	form:not([name]):not([id]) {
+		box-shadow: 0 0 0 5px transparentize(#800080, .5);
+	}
+
+	// Empty Interactive Elements
+	button:empty,
+	a:empty {
+		box-shadow: 0 0 0 5px transparentize(#6495ed, .5);
+	}
+
+	// Unnecessary or Deprecated Attributes
+	script[type="text/javascript"],
+	link[rel="stylesheet"][type="text/css"] {
+		box-shadow: 0 0 0 5px transparentize(#008080, .5);
+	}
+
+	// Headers out of order (i.e. h2 before h1, etc.)
+	h2 ~ h1,
+	h3 ~ h1,
+	h4 ~ h1,
+	h5 ~ h1,
+	h6 ~ h1,
+	h3 ~ h2,
+	h4 ~ h2,
+	h5 ~ h2,
+	h6 ~ h2,
+	h4 ~ h3,
+	h5 ~ h3,
+	h6 ~ h3,
+	h5 ~ h4,
+	h6 ~ h4,
+	h6 ~ h5 {
+		outline: 2px dotted blueviolet;
+	}
+}

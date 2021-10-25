@@ -1,0 +1,207 @@
+//*******************************************************************************
+// APPLICATION-WIDE SASS MIXINS
+//*******************************************************************************
+
+
+//*******************************************************************************
+// Mixin - Mediaqueries
+//
+// https://medium.com/sass-syntactically-awesome-style-sheets/889927b37740
+// https://gist.github.com/timknight/03e6335b8816aa534cf7
+//*******************************************************************************
+
+@mixin breakpoint($min: 0, $max: 0) {
+	$type: type-of($min);
+
+	@if $type == string {
+		@if $min == xxs {
+			@media (max-width: $breakpoint-xs - 1px) { @content; }       // Mobile Devices
+		}
+
+		@else if $min == xs {
+			@media (min-width: $breakpoint-xs) { @content; }       // iPhone 6/7/8 Plus
+		}
+
+		@else if $min == sm {
+			@media (min-width: $breakpoint-sm) { @content; }       // Phablet Devices
+		}
+
+		@else if $min == sl {
+			@media (min-width: $breakpoint-sl) { @content; }  // Tablet Devices
+		}
+
+		@else if $min == md {
+			@media (min-width: $breakpoint-md) { @content; }       // Desktops
+		}
+
+		@else if $min == lg {
+			@media (min-width: $breakpoint-lg) { @content; }      // Widescreen Desktops
+		}
+
+		@else if $min == xl {
+			@media (min-width: $breakpoint-xl) { @content; }      // Extra Widescreen Desktops
+		}
+
+		@else if $min == min {
+			@media (min-width: $breakpoint-min) { @content; }      // Min Breakpoint Width
+		}
+
+		@else if $min == mid {
+			@media (min-width: $breakpoint-mid) { @content; }      // Mid Breakpoint Width
+		}
+
+		@else if $min == max {
+			@media (min-width: $breakpoint-max) { @content; }      // Max Breakpoint Width
+		}
+
+		// Otherwise pass a warning to the compiler as to the appropriate options
+		@else {
+			@warn "The breakpoint mixin supports the following attributes: xxs, xs, sm, sl, md, lg, xl";
+		}
+	}
+	@else if $type == number {
+		// Allow for custom parameters for min and max size
+		$query: "all" !default;
+		@if      $min != 0 and $max != 0 { $query: "(min-width: #{$min}) and (max-width: #{$max})"; } // set both min and max
+		@else if $min != 0 and $max == 0 { $query: "(min-width: #{$min})"; } // set just min
+		@else if $min == 0 and $max != 0 { $query: "(max-width: #{$max})"; } // set just max
+		@media #{$query} { @content; }
+	}
+}
+
+
+
+//*******************************************************************************
+// Mixin - Font-Smoothing: Better font-rendering on OSX
+//
+// usage: @include font-smoothing(on);
+//
+// http://maximilianhoffmann.com/posts/better-font-rendering-on-osx
+//*******************************************************************************
+@mixin font-smoothing($value: on) {
+	@if $value == on {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	@else {
+		-webkit-font-smoothing: subpixel-antialiased;
+		-moz-osx-font-smoothing: auto;
+	}
+}
+
+
+
+
+//*******************************************************************************
+// Clearfix
+// Source: Bootstrap
+//
+// Source: https://v4-alpha.getbootstrap.com/utilities/clearfix/
+//*******************************************************************************
+@mixin clearfix() {
+	&::after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+}
+
+
+
+//*******************************************************************************
+// Placehoder Styling
+//
+// Example Useage:
+// @include placeholder{ color: red; }
+//*******************************************************************************
+@mixin placeholder {
+	&::-webkit-input-placeholder { @content; }
+	&:-moz-placeholder           { @content; } // Firefox 18-
+	&::-moz-placeholder          { @content; } // Firefox 19+
+	&:-ms-input-placeholder      { @content; }
+	&::-webkit-datetime-edit-day-field   { @content; } // date Picker Day
+	&::-webkit-datetime-edit-month-field { @content; } // date Picker Month
+	&::-webkit-datetime-edit-year-field  { @content; } // date Picker Year
+}
+
+
+
+//*******************************************************************************
+// CSS Content Columns
+//
+// Info: $columns: auto disable Columns
+//*******************************************************************************
+@mixin columns($columns: 2, $gap: 30) {
+	-webkit-column-count: $columns;
+	-webkit-column-gap: $gap + px;
+	-moz-column-count: $columns;
+	-moz-column-gap: $gap + px;
+	column-count: $columns;
+	column-gap: $gap + px;
+
+	p {
+		widows: 3;
+		orphans: 3;
+	}
+
+	p:first-child {
+		margin-top: 0;
+	}
+}
+
+
+
+//*******************************************************************************
+// Hyphenation
+//*******************************************************************************
+@mixin hyphens($mode: auto) {
+	word-wrap: break-word;
+	-webkit-hyphens: $mode;
+	   -moz-hyphens: $mode;
+	    -ms-hyphens: $mode; // IE10+
+	     -o-hyphens: $mode;
+			hyphens: $mode;
+}
+
+
+
+//*******************************************************************************
+// Input Type=Number - Turn Off Number Input Spinners
+//
+// http://css-tricks.com/snippets/css/turn-off-number-input-spinners/
+//*******************************************************************************
+@mixin input-number__disable-spinner {
+	input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
+
+
+//*******************************************************************************
+// Opacity
+//
+// http://css-tricks.com/snippets/css/cross-browser-opacity/
+//*******************************************************************************
+@mixin opacity($value) {
+	$value--ms: $value*100;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$value--ms})";
+	filter: alpha(opacity=$value--ms);
+	-moz-opacity: $value;
+	-khtml-opacity: $value;
+	opacity: $value;
+}
+
+
+
+//*******************************************************************************
+// Text-Shadow
+//
+// Default: @include text-shadow();
+// @include text-shadow(2px 2px 5px #000);
+//*******************************************************************************
+@mixin text-shadow($value: 1px 1px 1px #666) {
+	text-shadow: $value;
+}

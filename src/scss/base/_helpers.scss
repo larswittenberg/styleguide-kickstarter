@@ -1,0 +1,184 @@
+//*******************************************************************************
+// CSS HELPER CLASSES
+//*******************************************************************************
+
+//
+// Position relative
+//
+.relative {
+	position: relative;
+}
+
+
+
+
+//
+// Display Layout
+//
+.block { display: block; }
+.inline { display: inline; }
+.inline-block { display: inline-block; }
+
+
+
+//
+// Highlight Element
+//
+.mark {
+	background-color: yellow;
+	color: black;
+}
+
+
+
+//
+// Text Alignment classes
+//
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+.text-center { text-align: center; }
+
+
+
+//
+// Text Transformation classes
+//
+.text-lowercase  { text-transform: lowercase; }
+.text-uppercase  { text-transform: uppercase; }
+
+
+
+//
+// Text no-wrap
+//
+.nowrap,
+.text-nowrap {
+	white-space: nowrap;
+}
+
+
+//
+// Text word-break
+//
+.text-wordbreak {
+	word-break: break-all;
+}
+
+
+
+//
+// Text truncate
+//
+.text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+
+
+
+//
+// Fixed Body Helper body.locked
+// Disable Page Scrolling
+//
+body.locked {
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+}
+
+
+
+//
+// SVG
+//
+svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+
+
+//
+// Image
+//
+img {
+	position: relative;
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+
+
+//
+// iFrame
+//
+iframe {
+	border: 0;
+}
+
+
+
+//
+// Hide text while making it readable for screen readers
+// 1. Needed in WebKit-based browsers because of an implementation bug;
+// See: https://code.google.com/p/chromium/issues/detail?id=457146
+//
+.hide-text {
+	overflow: hidden;
+	padding: 0; /* 1 */
+	text-indent: 101%;
+	white-space: nowrap;
+	color: transparent;
+	font: 0/0 a;
+	text-shadow: none;
+	background-color: transparent;
+	border:0
+}
+
+
+
+//
+// Hide element while making it readable for screen readers
+// Shamelessly borrowed from HTML5Boilerplate:
+// https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
+//
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+
+
+//
+// Hide only visually, but have it available for screen readers:
+// https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+// http://a11yproject.com/posts/how-to-hide-content/
+//
+// 1. For long content, line feeds are not interpreted as spaces and small width
+//    causes content to wrap 1 word per line:
+//    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+//
+.sr-only {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+

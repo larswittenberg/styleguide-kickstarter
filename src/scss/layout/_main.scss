@@ -1,0 +1,14 @@
+//*******************************************************************************
+// MAIN Content Wrapper
+//*******************************************************************************
+
+
+.main {
+	flex: 1;
+	flex: 1 0 auto; // IE 11 Fix
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
