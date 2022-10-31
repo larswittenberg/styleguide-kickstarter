@@ -1,18 +1,22 @@
-var gulp = require('gulp'),
-	sass = require('gulp-sass')(require('node-sass')),
-	postcss = require('gulp-postcss'),
-	autoprefixer = require('autoprefixer'),
-	fileinclude = require('gulp-file-include'),
-	del = require('del'),
-	cssnano = require('cssnano'),
-	sourcemaps = require('gulp-sourcemaps'),
-	minify = require('gulp-babel-minify'),
-	rename = require('gulp-rename'),
-	inject = require('gulp-inject-string'),
-	babel = require('gulp-babel'),
-	concat = require('gulp-concat');
+import gulp from 'gulp';
+import dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import fileinclude from 'gulp-file-include';
+import { deleteAsync } from 'del';
+import cssnano from 'cssnano';
+import sourcemaps from 'gulp-sourcemaps';
+// import minify from 'gulp-babel-minify';
+import rename from 'gulp-rename';
+// import inject from 'gulp-inject-string';
+import babel from 'gulp-babel';
+import concat from 'gulp-concat';
+import browserSync from 'browser-sync';
 
-var browserSync = require('browser-sync').create();
+const { series, parallel, src, dest, task } = gulp;
+const sass = gulpSass(dartSass);
+
 
 
 // Path Variables
@@ -31,14 +35,14 @@ var paths = {
 	},
 	templatefiles: {
 		src: ['src/pages/**/*.*'],
-		dest: 'dist/'
+		dest: 'dist/',
 	},
 	includefiles: {
 		src: ['src/includes/**/*.html'],
 	},
 	staticfiles: {
 		src: ['src/**/*.pdf', 'src/.htaccess'],
-		dest: 'dist/'
+		dest: 'dist/',
 	},
 	fonts: {
 		src: 'src/fonts/**/*.*',
@@ -46,22 +50,18 @@ var paths = {
 	},
 	images: {
 		src: 'src/images/**/*.*',
-		dest: 'dist/images/'
+		dest: 'dist/images/',
 	},
 	videos: {
 		src: 'src/videos/**/*.*',
-		dest: 'dist/videos/'
-	},
-	animations: {
-		src: 'src/animations/**/*.*',
-		dest: 'dist/animations/'
+		dest: 'dist/videos/',
 	}
 };
 
 
 // TASK: Clean Assets
 function clean() {
-	return del(['dist']);
+	return deleteAsync(['dist']);
 }
 
 
@@ -102,7 +102,6 @@ function style() {
 		.pipe(gulp.dest(paths.styles.dest))
 		.pipe(browserSync.stream());
 }
-exports.style = style;
 
 
 
@@ -117,11 +116,11 @@ function javascript() {
 				presets: ['@babel/preset-env']
 			}))
 			.pipe(gulp.dest(paths.scripts.dest))
-			.pipe(minify({
-				mangle: {
-				  keepClassName: true
-				}
-			}))
+			// .pipe(minify({
+			// 	mangle: {
+			// 	  keepClassName: true
+			// 	}
+			// }))
 			.pipe(rename(function (path) {
 				path.basename += '.min';
 			}))
@@ -131,7 +130,6 @@ function javascript() {
 			.pipe(browserSync.stream())
 	);
 }
-exports.javascript = javascript;
 
 
 
@@ -144,28 +142,26 @@ function copyscripts() {
 			.pipe(browserSync.stream())
 	);
 }
-exports.copyscripts = copyscripts;
 
 
 
 // TASK: Add / Update Build DateTime
-function injectBuildDateTime() {
-	const date = new Date();
-	const dateoptions = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-	let datetime = date.toLocaleDateString('de-DE', dateoptions);
+// function injectBuildDateTime() {
+// 	const date = new Date();
+// 	const dateoptions = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+// 	let datetime = date.toLocaleDateString('de-DE', dateoptions);
 
-	return gulp
-		.src('src/pages/index.html')
-		.pipe(
-			fileinclude({
-				prefix: '@@',
-				basepath: 'src/includes/'
-			})
-		)
-		.pipe(inject.replace('BUILDDATE', datetime))
-		.pipe(gulp.dest(paths.templatefiles.dest));
-}
-exports.injectBuildDateTime = injectBuildDateTime;
+// 	return gulp
+// 		.src('src/pages/index.html')
+// 		.pipe(
+// 			fileinclude({
+// 				prefix: '@@',
+// 				basepath: 'src/includes/'
+// 			})
+// 		)
+// 		.pipe(inject.replace('BUILDDATE', datetime))
+// 		.pipe(gulp.dest(paths.templatefiles.dest));
+// }
 
 
 
@@ -181,7 +177,6 @@ function copyfiles() {
 		)
 		.pipe(gulp.dest(paths.templatefiles.dest));
 }
-exports.copyfiles = copyfiles;
 
 
 
@@ -192,7 +187,6 @@ function copystaticfiles() {
 		.pipe(gulp.dest(paths.staticfiles.dest)
 	);
 }
-exports.copystaticfiles = copystaticfiles;
 
 
 
@@ -204,7 +198,6 @@ function copyfonts() {
 			.pipe(gulp.dest(paths.fonts.dest))
 	);
 }
-exports.copyfonts = copyfonts;
 
 
 
@@ -216,7 +209,6 @@ function copyimages() {
 			.pipe(gulp.dest(paths.images.dest))
 	);
 }
-exports.copyimages = copyimages;
 
 
 
@@ -228,40 +220,23 @@ function copyvideos() {
 			.pipe(gulp.dest(paths.videos.dest))
 	);
 }
-exports.copyvideos = copyvideos;
-
-
-
-// TASK: Copy Animations to /dist
-function copyanimations() {
-	return (
-		gulp
-			.src(paths.animations.src)
-			.pipe(gulp.dest(paths.animations.dest))
-	);
-}
-exports.copyanimations = copyanimations;
 
 
 
 // TASK: Watch
 function watch() {
-	gulp.watch(paths.styles.src, gulp.series(style, injectBuildDateTime));
-	gulp.watch(paths.scripts.src, gulp.series(javascript, injectBuildDateTime)).on('change', reload);
+	gulp.watch(paths.styles.src, gulp.series(style));
+	gulp.watch(paths.scripts.src, gulp.series(javascript)).on('change', reload);
 	gulp.watch(paths.externalscripts.src, copyscripts).on('change', reload);
 	gulp.watch(paths.images.src, copyimages).on('change', reload);
 	gulp.watch(paths.videos.src, copyvideos).on('change', reload);
-	gulp.watch(paths.animations.src, copyanimations).on('change', reload);
-	gulp.watch(paths.templatefiles.src, gulp.series(copyfiles, injectBuildDateTime)).on('change', reload);
-	gulp.watch(paths.includefiles.src, gulp.series(copyfiles, injectBuildDateTime)).on('change', reload);
+	gulp.watch(paths.templatefiles.src, gulp.series(copyfiles)).on('change', reload);
+	gulp.watch(paths.includefiles.src, gulp.series(copyfiles)).on('change', reload);
 	gulp.watch(paths.staticfiles.src, copystaticfiles).on('change', reload);
 	gulp.watch(paths.fonts.src, copyfonts).on('change', reload);
 }
-exports.watch = watch;
 
 
-var buildTask = gulp.series(clean, style, javascript, copyscripts, copystaticfiles, copyfiles, copyfonts, copyimages, copyvideos, copyanimations, injectBuildDateTime);
-var watchTask = gulp.series(clean, style, javascript, copyscripts, copystaticfiles, copyfiles, copyfonts, copyimages, copyvideos, copyanimations, serve, injectBuildDateTime, watch);
+export const build = series(clean, style, javascript, copyscripts, copystaticfiles, copyfiles, copyfonts, copyimages, copyvideos);
 
-exports.build = buildTask;
-exports.watch = watchTask;
+export default series(clean, style, javascript, copyscripts, copystaticfiles, copyfiles, copyfonts, copyimages, copyvideos, serve, watch);
